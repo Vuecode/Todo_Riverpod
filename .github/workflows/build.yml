@@ -1,0 +1,78 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v3
+
+      # Setup Java for Android builds
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # Setup Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.2'
+          channel: 'stable'
+
+      # Get dependencies
+      - name: Get dependencies
+        run: flutter pub get
+
+      # Run code analysis
+      - name: Run Flutter analysis
+        run: flutter analyze
+
+      # Build Web
+      - name: Build Web
+        run: flutter build web --release
+
+      # Build APK (Android)
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Upload build artifacts
+      - name: Upload Web Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-web-build
+          path: build/web/
+
+      - name: Upload APK Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-apk-build
+          path: build/app/outputs/flutter-apk/
+
+  deploy-web:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Web Build
+        uses: actions/download-artifact@v3
+        with:
+          name: flutter-web-build
+          path: build/web/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web/
