@@ -2,6 +2,10 @@
 
 A modern, responsive, production-ready Todo CRUD application built with Flutter using clean architecture, Riverpod for state management, and multi-platform support.
 
+[![Build and Deploy](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/build.yml/badge.svg)](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/build.yml)
+[![Code Quality](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/analyze.yml/badge.svg)](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/analyze.yml)
+[![Tests](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/test.yml/badge.svg)](https://github.com/Vuecode/Todo_Riverpod/actions/workflows/test.yml)
+
 ## 🎯 Project Overview
 
 This is a complete Todo application that demonstrates best practices in Flutter development including:

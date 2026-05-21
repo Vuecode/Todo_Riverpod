@@ -120,16 +120,32 @@ gh run list
 gh run view <run-id>
 ```
 
-### Common Issues
+### Common Issues & Solutions
 
-**Issue**: Build fails with "Flutter not found"
-- **Solution**: Ensure Flutter version in workflow matches your local version
+**❌ Issue**: Build fails with "Flutter not found"
+- **✅ Solution**: Ensure Flutter version in workflow matches your local version
+- Check: `flutter --version` locally and compare with workflow YAML
 
-**Issue**: GitHub Pages not updating
-- **Solution**: Check Settings → Pages → Source is set to `gh-pages` branch
+**❌ Issue**: GitHub Pages not updating
+- **✅ Solution**: Check Settings → Pages → Source is set to `gh-pages` branch
+- The workflow automatically creates the `gh-pages` branch on first successful deployment
 
-**Issue**: APK build fails
-- **Solution**: Ensure Java 11 is available (handled automatically)
+**❌ Issue**: APK build fails
+- **✅ Solution**: Ensure Java 11 is available (handled automatically in workflow)
+- Try simplified `web-build.yml` if other builds are failing
+
+**❌ Issue**: "Permission denied" errors
+- **✅ Solution**: GitHub token is automatically available as `${{ secrets.GITHUB_TOKEN }}`
+- No manual token setup needed
+
+**❌ Issue**: Tests fail or timeout
+- **✅ Solution**: Tests are set to `continue-on-error: true`
+- Check workflow logs at Actions tab for details
+- Add actual tests in `test/` folder to enable proper testing
+
+**❌ Issue**: Artifact download fails
+- **✅ Solution**: Check artifact name matches in both upload and download steps
+- Artifacts are kept for 7 days by default
 
 ## Badges
 
