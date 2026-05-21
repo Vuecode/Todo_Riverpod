@@ -11,26 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.2'
           channel: 'stable'
+          cache: true
 
       - name: Get dependencies
         run: flutter pub get
 
       - name: Run tests
         run: flutter test
-
-      - name: Run code coverage
-        run: flutter test --coverage
         continue-on-error: true
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/lcov.info
+      - name: Generate coverage report
+        run: flutter test --coverage
         continue-on-error: true
